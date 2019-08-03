@@ -70,6 +70,12 @@ function Get-NearestCertificateRequest
                     # If identical, the search has completed and $Found = $False                                                                    
                     If($TempVal -eq $MidVal)
                     {
+                        # If low index is 0, set it to 1 (there is no ADCS database row for 0)
+                        If ($LowIndex -eq 0)                            
+                        {                            
+                            $LowIndex = 1
+                        }
+                        
                         # Output low index as final index
                         $Found = $False                        
                         $OutputRequest = (Get-AdcsDatabaseRow -CertificationAuthority $CA -RowID $LowIndex)
