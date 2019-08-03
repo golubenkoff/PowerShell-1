@@ -53,7 +53,7 @@ function Get-NearestCertificateRequest
                 $TempVal = ""                              # Used to determine end of search where $Found = $False
                 $HighIndex = $newestRequestID              # High Side of array segment
                 [int]$MidPoint = ($HighIndex-$LowIndex)/2  # Mid point of array segment
-                $Global:Found = $False
+                $Found = $False
 
                 While($LowIndex -le $HighIndex)
                 {
@@ -65,7 +65,7 @@ function Get-NearestCertificateRequest
                     If($TempVal -eq $MidVal)
                     {
                         # Output low index as final index
-                        $Global:Found = $False                        
+                        $Found = $False                        
                         $OutputRequest = (Get-AdcsDatabaseRow -CertificationAuthority $CA -RowID $LowIndex)
                         Write-Verbose "[$($CA.Name)] Binary Search has completed - exact match not found in $Counter passes. Index set to Low value: $LowIndex. Request.SubmittedWhen Date: $($OutputRequest.'Request.SubmittedWhen')"                        
                         $LowIndex
@@ -97,7 +97,7 @@ function Get-NearestCertificateRequest
                     If($SearchVal -eq $MidVal)
                     {
                         # Output midpoint as final index
-                        $Global:Found = $True
+                        $Found = $True
                         $OutputRequest = (Get-AdcsDatabaseRow -CertificationAuthority $CA -RowID $MidPoint)
                         Write-Verbose "[$($CA.Name)] Binary Search has completed - exact match found in $Counter passes. Index set to exact value: $MidPoint. Request.SubmittedWhen Date: $($OutputRequest.'Request.SubmittedWhen')"
                         $MidPoint
