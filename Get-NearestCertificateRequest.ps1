@@ -59,6 +59,12 @@ function Get-NearestCertificateRequest
                 {
                     # Determine the timestamp of the MidPoint
                     $InputRequest = (Get-AdcsDatabaseRow -CertificationAuthority $CA -RowID $MidPoint)
+                    While ($InputRequest -eq $null)
+                    {
+                        # if database row is null, increment backwards from midpoint to find a valid row....
+                        $MidPoint = $MidPoint-1
+                        $InputRequest = (Get-AdcsDatabaseRow -CertificationAuthority $CA -RowID $MidPoint)
+                    }
                     $MidVal = $InputRequest.'Request.SubmittedWhen' 
                         
                     # If identical, the search has completed and $Found = $False                                                                    
